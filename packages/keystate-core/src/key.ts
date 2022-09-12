@@ -140,6 +140,22 @@ class KeyManager {
       return false;
     }
   }
+
+  keyfsEnv(key: string, ref: string, value?: string) {
+    if (this.isExpired(key)) {
+      return false;
+    }
+    if (!this.keyfsExists(key, '.env')) {
+      this.keyfsWrite(key, '.env', '{}');
+    }
+    let env = JSON.parse(this.keyfsRead(key, '.env')!);
+    if (value !== undefined) {
+      env[ref] = value;
+      this.keyfsWrite(key, '.env', JSON.stringify(env));
+    } else {
+      return env[ref];
+    }
+  }
 }
 
 export { Key, KeyManager };

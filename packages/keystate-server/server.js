@@ -2,12 +2,15 @@ const { KeyManager } = require('@carlosski/keystate');
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const bodyParser = require('body-parser');
+const mime = require('mime-types');
 
 const app = express();
 app.use(cors({
   origin: '*'
 }))
-app.use(express.json());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 const keyManager = new KeyManager(60000, __dirname);
 
@@ -51,6 +54,7 @@ app.post('/key/:key/image', (req, res) => {
   const { image, name } = req.body;
   try {
     keyManager.keyfsWrite(key, name, Buffer.from(image, 'base64'));
+    keyManager.keyfsEnv(key, "image", name);
     res.send({
       status: 200
     })
@@ -66,9 +70,12 @@ app.post('/key/:key/image', (req, res) => {
 app.get('/key/:key/getimage', (req, res) => {
   const key = req.params.key;
   try {
-    const image = keyManager.keyfsReadBinary(key, "yay.jpg");
+    const imageName = keyManager.keyfsEnv(key, "image");
+    const image = keyManager.keyfsReadBinary(key, imageName);
     res.send({
       status: 200,
+      name: imageName,
+      mime: mime.lookup(imageName),
       image: Buffer.from(image, 'binary').toString('base64')
     })
   } catch (e) {

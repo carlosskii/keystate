@@ -61,7 +61,7 @@ function App() {
               },
               body: JSON.stringify({
                 image: window.btoa(reader.result),
-                name: "yay.jpg"
+                name: file.name
               })
             });
           const data = await res.json();
@@ -89,10 +89,11 @@ function App() {
         const data = await res.json();
         if (data.status === 200) {
           const link = document.createElement("a");
-          link.href = `data:image/jpeg;base64,${data.image}`;
-          link.download = "yay.jpg";
+          link.href = `data:${data.mime};base64,${data.image}`;
+          link.download = data.name;
           document.body.appendChild(link);
           link.click();
+          document.body.removeChild(link);
           setState("Image downloaded!");
         } else {
           setState(data.error);
@@ -117,7 +118,10 @@ function App() {
         <button className="App__button" onClick={getNumpy}>
           Get Python Array
         </button>
-        <input type="file" onChange={readFile} />
+        <label className="App__button">
+          <input type="file" onChange={readFile} />
+          Upload Image
+        </label>
         <button className="App__button" onClick={downloadFile}>
           Download Image
         </button>

@@ -25,6 +25,28 @@
   padding: 0 1rem;
 }
 
+label.App__button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #eee;
+  border: 2px solid #888;
+  border-radius: 5px;
+}
+
+label.App__button:hover {
+  background-color: #ddd;
+}
+
+label.App__button:active {
+  background-color: #ccc;
+}
+
+input[type=file] {
+  display: none;
+}
+
 .App__state {
   width: 55ch;
   height: fit-content;
