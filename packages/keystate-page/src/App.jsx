@@ -61,7 +61,7 @@ function App() {
               },
               body: JSON.stringify({
                 image: window.btoa(reader.result),
-                name: file.name
+                name: "yay.jpg"
               })
             });
           const data = await res.json();
@@ -79,6 +79,32 @@ function App() {
     }
   }
 
+  const downloadFile = async () => {
+    try {
+      const valid = await checkValid();
+      if (valid) {
+        const res = await fetch(
+          `${API_LINK}/key/${key}/getimage`
+        );
+        const data = await res.json();
+        if (data.status === 200) {
+          const link = document.createElement("a");
+          link.href = `data:image/jpeg;base64,${data.image}`;
+          link.download = "yay.jpg";
+          document.body.appendChild(link);
+          link.click();
+          setState("Image downloaded!");
+        } else {
+          setState(data.error);
+        }
+      } else {
+        setState("Key expired, refreshing key...");
+      }
+    } catch (e) {
+      setState("Network error");
+    }
+  }
+
   return (
     <div className="App">
       <h1>
@@ -92,6 +118,9 @@ function App() {
           Get Python Array
         </button>
         <input type="file" onChange={readFile} />
+        <button className="App__button" onClick={downloadFile}>
+          Download Image
+        </button>
       </div>
       <p className="App__state">
         {state}

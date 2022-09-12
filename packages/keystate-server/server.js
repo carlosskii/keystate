@@ -62,6 +62,23 @@ app.post('/key/:key/image', (req, res) => {
   }
 })
 
+
+app.get('/key/:key/getimage', (req, res) => {
+  const key = req.params.key;
+  try {
+    const image = keyManager.keyfsReadBinary(key, "yay.jpg");
+    res.send({
+      status: 200,
+      image: Buffer.from(image, 'binary').toString('base64')
+    })
+  } catch (e) {
+    res.send({
+      status: 500,
+      error: e.message
+    })
+  }
+})
+
 setInterval(() => {
   keyManager.removeExpired();
 }, 60000);

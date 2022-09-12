@@ -113,6 +113,14 @@ class KeyManager {
     return readFileSync(path, 'utf8');
   }
 
+  keyfsReadBinary(key: string, file: string) {
+    let path = this.getFilePath(key, file);
+    if (!existsSync(path)) {
+      return null;
+    }
+    return readFileSync(path, 'binary');
+  }
+
   keyfsWrite(key: string, file: string, data: string) {
     let path = this.getFilePath(key, file);
     this.createKeyDir(key);
