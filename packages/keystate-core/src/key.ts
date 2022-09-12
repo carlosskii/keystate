@@ -77,7 +77,7 @@ class KeyManager {
     }
   }
 
-  private getKeyDir(key: string) {
+  getKeyDir(key: string) {
     return join(this.directory, key);
   }
 

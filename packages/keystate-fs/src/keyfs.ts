@@ -1,5 +1,6 @@
 import { KeyManager } from "@carlosski/keystate";
 import { existsSync, writeFileSync, readFileSync } from 'fs';
+import { execSync, ExecSyncOptionsWithBufferEncoding } from 'child_process';
 
 function KeyFS(manager: KeyManager, key: string) {
   if (manager.isExpired(key)) {
@@ -58,13 +59,21 @@ function KeyFS(manager: KeyManager, key: string) {
     }
   }
 
+  function exec(command: string, settings: ExecSyncOptionsWithBufferEncoding = {}) {
+    if (manager.isExpired(key)) return false;
+    const dir = manager.getKeyDir(key);
+    execSync(`${command} ${dir}`, { ...settings, stdio: 'inherit' });
+    return true;
+  }
+
   return {
     exists,
     read,
     readBinary,
     write,
     writeBinary,
-    env
+    env,
+    exec
   };
 }
 
