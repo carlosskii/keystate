@@ -5,6 +5,9 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c"
@@ -14,7 +17,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cryptikkUS/keystate"
+    "url": "https://github.com/cryptikkUS/keystate.git",
+    "directory": "packages/keystate-core"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.19.0",
