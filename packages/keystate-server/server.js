@@ -7,6 +7,7 @@ const app = express();
 app.use(cors({
   origin: '*'
 }))
+app.use(express.json());
 
 const keyManager = new KeyManager(60000, __dirname);
 
@@ -45,8 +46,26 @@ app.get('/key/:key/data', (req, res) => {
   }
 })
 
-setInterval(keyManager.removeExpired, 60000);
+app.post('/key/:key/image', (req, res) => {
+  const key = req.params.key;
+  const { image, name } = req.body;
+  try {
+    keyManager.keyfsWrite(key, name, Buffer.from(image, 'base64'));
+    res.send({
+      status: 200
+    })
+  } catch (e) {
+    res.send({
+      status: 500,
+      error: e.message
+    })
+  }
+})
+
+setInterval(() => {
+  keyManager.removeExpired();
+}, 60000);
 
 app.listen(4242, () => {
-  console.log('Listening on port 3000');
+  console.log('Listening on port 4242');
 })

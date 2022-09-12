@@ -21,6 +21,7 @@ class Key {
   isExpired(timeout: number) {
     let now = new Date();
     let diff = now.getTime() - this.lastAccessed.getTime();
+    this.lastAccessed = now;
     return diff > timeout;
   }
 }
@@ -61,11 +62,19 @@ class KeyManager {
   }
 
   removeExpired() {
-    for (let key in this.keys) {
+    console.log("Removing expired keys...");
+    let anyExpired = false;
+    Object.keys(this.keys).forEach(key => {
       if (this.isExpired(key)) {
         this.removeKeyDir(key);
         delete this.keys[key];
+        anyExpired = true;
       }
+    })
+    if (anyExpired) {
+      console.log("Complete!");
+    } else {
+      console.log("No keys to remove.");
     }
   }
 
