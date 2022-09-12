@@ -20,6 +20,6 @@
     "typescript": "^4.8.3"
   },
   "dependencies": {
-    "@carlosski/keystate": "^0.2.0"
+    "@carlosski/keystate": "^1.0.0"
   }
 }
