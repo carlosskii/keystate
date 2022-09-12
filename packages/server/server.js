@@ -8,7 +8,7 @@ app.use(cors({
   origin: '*'
 }))
 
-const keyManager = new KeyManager(60000, path.resolve(__dirname, '__state__'));
+const keyManager = new KeyManager(60000, __dirname);
 
 app.get('/key/new', (req, res) => {
   const key = keyManager.addKey();
@@ -27,8 +27,26 @@ app.get('/key/:key', (req, res) => {
   });
 })
 
+app.get('/key/:key/data', (req, res) => {
+  const key = req.params.key;
+  const success = keyManager.keyfsExec(
+    "python3 np.py", key
+  );
+  if (success) {
+    res.send({
+      status: 200,
+      data: keyManager.keyfsRead(key, "np.txt")
+    })
+  } else {
+    res.send({
+      status: 500,
+      data: "Script execution failed"
+    })
+  }
+})
+
 setInterval(keyManager.removeExpired, 60000);
 
-app.listen(3000, () => {
+app.listen(4242, () => {
   console.log('Listening on port 3000');
 })

@@ -33,15 +33,17 @@ class KeyManager {
   keys: IKeys;
   timeout: number;
   directory: string;
+  root: string;
 
   constructor(timeout: number, directory: string) {
     this.keys = {};
     this.timeout = timeout;
-    this.directory = directory;
-    if (existsSync(directory)) {
-      rmSync(directory, { recursive: true });
+    this.directory = join(directory, '__state__');
+    this.root = directory;
+    if (existsSync(this.directory)) {
+      rmSync(this.directory, { recursive: true });
     }
-    mkdirSync(directory);
+    mkdirSync(this.directory);
   }
 
   addKey() {
@@ -115,7 +117,7 @@ class KeyManager {
     let dir = this.getKeyDir(key);
     this.createKeyDir(key);
     try {
-      execSync(`${command} ${dir}`, { cwd: __dirname, stdio: 'inherit' });
+      execSync(`${command} ${dir}`, { cwd: this.root, stdio: 'inherit' });
       return true;
     } catch (e) {
       return false;

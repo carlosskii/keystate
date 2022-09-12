@@ -1,0 +1,32 @@
+.App {
+  width: 90vw;
+  height: 90vh;
+  padding: 5vh 5vw;
+  background: #ccc;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  font-family: sans-serif;
+}
+
+.App__buttons {
+  height: 2rem;
+  width: 40rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.App__button {
+  height: 100%;
+  width: fit-content;
+  padding: 0 1rem;
+}
+
+.App__state {
+  width: 55ch;
+  height: fit-content;
+  text-align: center;
+}
