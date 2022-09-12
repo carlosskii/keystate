@@ -1,17 +1,25 @@
 {
   "name": "@carlosski/keystate-fs",
   "version": "1.0.0",
-  "description": "",
+  "description": "FS management for a keystate",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cryptikkUS/keystate.git",
+    "directory": "packages/keystate-fs"
+  },
+  "author": "Carlos Kieliszewski",
+  "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-node-resolve": "^14.1.0",
