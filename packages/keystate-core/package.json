@@ -1,7 +1,7 @@
 {
   "name": "@carlosski/keystate",
   "version": "1.0.0",
-  "description": "",
+  "description": "Tying user keys to backend files",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -10,8 +10,12 @@
     "build": "rollup -c"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Carlos Kieliszewski",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cryptikkUS/keystate"
+  },
   "devDependencies": {
     "@babel/preset-env": "^7.19.0",
     "@babel/preset-typescript": "^7.18.6",
