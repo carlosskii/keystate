@@ -1,4 +1,5 @@
 const { KeyManager } = require('@carlosski/keystate');
+const { KeyFS } = require('@carlosski/keystate-fs');
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -33,13 +34,14 @@ app.get('/key/:key', (req, res) => {
 
 app.get('/key/:key/data', (req, res) => {
   const key = req.params.key;
+  const fs = new KeyFS(key);
   const success = keyManager.keyfsExec(
     "python3 np.py", key
   );
   if (success) {
     res.send({
       status: 200,
-      data: keyManager.keyfsRead(key, "np.txt")
+      data: fs.read("np.txt")
     })
   } else {
     res.send({
@@ -51,10 +53,11 @@ app.get('/key/:key/data', (req, res) => {
 
 app.post('/key/:key/image', (req, res) => {
   const key = req.params.key;
+  const fs = KeyFS(keyManager, key);
   const { image, name } = req.body;
   try {
-    keyManager.keyfsWrite(key, name, Buffer.from(image, 'base64'));
-    keyManager.keyfsEnv(key, "image", name);
+    fs.writeBinary(name, Buffer.from(image, 'base64'));
+    fs.env("image", name);
     res.send({
       status: 200
     })
@@ -69,9 +72,10 @@ app.post('/key/:key/image', (req, res) => {
 
 app.get('/key/:key/getimage', (req, res) => {
   const key = req.params.key;
+  const fs = KeyFS(keyManager, key);
   try {
-    const imageName = keyManager.keyfsEnv(key, "image");
-    const image = keyManager.keyfsReadBinary(key, imageName);
+    const imageName = fs.env("image");
+    const image = fs.readBinary(imageName);
     res.send({
       status: 200,
       name: imageName,
@@ -93,5 +97,3 @@ setInterval(() => {
 app.listen(4242, () => {
   console.log('Listening on port 4242');
 })
-
-// Comment for Lerna publish
